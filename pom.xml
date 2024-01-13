@@ -58,75 +58,15 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mybatis.version>3.5.9</mybatis.version>
-        <mybatis-spring.version>2.0.7</mybatis-spring.version>
-        <mybatis-freemarker.version>1.2.3</mybatis-freemarker.version>
-        <mybatis-velocity.version>2.1.1</mybatis-velocity.version>
-        <mybatis-thymeleaf.version>1.0.3</mybatis-thymeleaf.version>
-        <spring-boot.version>2.6.3</spring-boot.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${mybatis.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis-spring</artifactId>
-                <version>${mybatis-spring.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis.scripting</groupId>
-                <artifactId>mybatis-freemarker</artifactId>
-                <version>${mybatis-freemarker.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis.scripting</groupId>
-                <artifactId>mybatis-velocity</artifactId>
-                <version>${mybatis-velocity.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.mybatis.scripting</groupId>
-                <artifactId>mybatis-thymeleaf</artifactId>
-                <version>${mybatis-thymeleaf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.zhangrongshun</groupId>
-                <artifactId>zhangrs-spring-boot-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.zhangrongshun</groupId>
-                <artifactId>zhangrs-xxl-job-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.zhangrongshun</groupId>
-                <artifactId>zhangrs-spring-boot-test-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.github.zhangrongshun</groupId>
-                <artifactId>zhangrs-spring-boot-starter-test</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.15.1</version>
+        </dependency>
+    </dependencies>
 
     <repositories>
         <repository>
