@@ -1,6 +1,7 @@
 package io.github.zhangrongshun.util.io;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,13 +28,23 @@ public class FileUtils {
     }
 
     public static void main(String[] args) throws IOException {
-        try (CustomizedLineIterator customizedLineIterator = FileUtils.customizedLineIterator(new File("D:\\logs\\1.txt"), StandardCharsets.UTF_8, "AAA")) {
+        try (CustomizedLineIterator customizedLineIterator = FileUtils.customizedLineIterator(new File("D:\\log\\1.dat"), StandardCharsets.UTF_8, "\n")) {
             int i = 1;
             while (customizedLineIterator.hasNext()) {
                 String next = customizedLineIterator.next();
                 System.out.println("第" + i + "行, " + next);
                 i++;
             }
+            System.out.println(i);
+        }
+        try (LineIterator customizedLineIterator = org.apache.commons.io.FileUtils.lineIterator(new File("D:\\log\\1.dat"), StandardCharsets.UTF_8.name())) {
+            int i = 1;
+            while (customizedLineIterator.hasNext()) {
+                String next = customizedLineIterator.next();
+                System.out.println("第" + i + "行, " + next);
+                i++;
+            }
+            System.out.println(i);
         }
     }
 

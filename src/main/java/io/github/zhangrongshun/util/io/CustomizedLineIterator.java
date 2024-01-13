@@ -22,9 +22,12 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
 
 
     public CustomizedLineIterator(Reader reader, String lineSeparator) throws IllegalArgumentException {
+        Objects.requireNonNull(reader, "reader");
+        if (lineSeparator == null || lineSeparator.isEmpty()) {
+            throw new IllegalArgumentException("lineSeparator");
+        }
         this.lineSeparator = lineSeparator;
         this.lineSeparatorCharsCount = (int) lineSeparator.chars().count();
-        Objects.requireNonNull(reader, "reader");
         if (reader instanceof BufferedReader) {
             bufferedReader = (BufferedReader) reader;
         } else {
@@ -59,7 +62,7 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
             }
             finished = true;
             cachedLine = getCacheLine(cs);
-            return true;
+            return cachedLine != null;
         } catch (final IOException ioe) {
             IOUtils.closeQuietly(this, ioe::addSuppressed);
             throw new IllegalStateException(ioe);
@@ -68,6 +71,9 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
 
     private String getCacheLine(List<Character> cs) {
         int charCount = finished ? cs.size() : cs.size() - this.lineSeparatorCharsCount;
+        if (charCount == 0 && finished) {
+            return null;
+        }
         char[] cs1 = new char[charCount];
         for (int i = 0; i < charCount; i++) {
             cs1[i] = cs.get(i);
