@@ -21,7 +21,7 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
     private boolean finished;
 
 
-    public CustomizedLineIterator(Reader reader, String lineSeparator) throws IllegalArgumentException {
+    public CustomizedLineIterator(Reader reader, String lineSeparator) {
         Objects.requireNonNull(reader, "reader");
         if (lineSeparator == null || lineSeparator.isEmpty()) {
             throw new IllegalArgumentException("lineSeparator");
