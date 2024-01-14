@@ -21,7 +21,7 @@ public class FileUtils {
         try {
             inputStream = Files.newInputStream(file.toPath());
             return new CustomizedLineIterator(new InputStreamReader(inputStream, charset), lineSeparator);
-        } catch (final IOException ex) {
+        } catch (IOException ex) {
             IOUtils.closeQuietly(inputStream, ex::addSuppressed);
             throw ex;
         }
