@@ -59,11 +59,11 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
                     char[] temp = new char[this.lineSeparatorCharsCount];
                     System.arraycopy(lineSeparatorChars, 1, temp, 0, this.lineSeparatorCharsCount - 1);
                     temp[lineSeparatorCharsCount - 1] = c;
+                    lineSeparatorChars = temp;
                     String s = new String(temp);
                     if (this.lineSeparator.equals(s)) {
                         return getNextLine();
                     }
-                    lineSeparatorChars = temp;
                 }
             }
         } catch (IOException ioe) {
