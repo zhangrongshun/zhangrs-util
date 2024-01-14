@@ -20,6 +20,8 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
 
     private boolean finished;
 
+    private List<Character> cachedLineChars;
+
 
     public CustomizedLineIterator(Reader reader, String lineSeparator) {
         Objects.requireNonNull(reader, "reader");
@@ -33,6 +35,7 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
         } else {
             bufferedReader = new BufferedReader(reader);
         }
+        cachedLineChars = new ArrayList<>();
     }
 
     @Override
@@ -44,41 +47,42 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
             return false;
         }
         char[] lineSeparatorChars = new char[this.lineSeparatorCharsCount];
-        List<Character> cs = new ArrayList<>();
-        int b;
         try {
-            while ((b = bufferedReader.read()) != -1) {
-                cs.add((char) b);
-                char[] temp = new char[this.lineSeparatorCharsCount];
-                System.arraycopy(lineSeparatorChars, 1, temp, 0, this.lineSeparatorCharsCount - 1);
-                temp[lineSeparatorCharsCount - 1] = (char) b;
-                String s = new String(temp);
-                if (this.lineSeparator.equals(s)) {
-                    cachedLine = getCacheLine(cs);
-                    cs.clear();
-                    return true;
+            for (; ; ) {
+                int b = bufferedReader.read();
+                if (b == IOUtils.EOF) {
+                    finished = true;
+                    return getNextLine();
+                } else {
+                    char c = (char) b;
+                    cachedLineChars.add(c);
+                    char[] temp = new char[this.lineSeparatorCharsCount];
+                    System.arraycopy(lineSeparatorChars, 1, temp, 0, this.lineSeparatorCharsCount - 1);
+                    temp[lineSeparatorCharsCount - 1] = c;
+                    String s = new String(temp);
+                    if (this.lineSeparator.equals(s)) {
+                        return getNextLine();
+                    }
+                    lineSeparatorChars = temp;
                 }
-                lineSeparatorChars = temp;
             }
-            finished = true;
-            cachedLine = getCacheLine(cs);
-            return cachedLine != null;
         } catch (IOException ioe) {
             IOUtils.closeQuietly(this, ioe::addSuppressed);
             throw new IllegalStateException(ioe);
         }
     }
 
-    private String getCacheLine(List<Character> cs) {
-        int charCount = finished ? cs.size() : cs.size() - this.lineSeparatorCharsCount;
-        if (charCount == 0 && finished) {
-            return null;
+    private boolean getNextLine() {
+        int charCount = finished ? cachedLineChars.size() : cachedLineChars.size() - this.lineSeparatorCharsCount;
+        if (charCount > 0 || !finished) {
+            char[] cs1 = new char[charCount];
+            for (int i = 0; i < charCount; i++) {
+                cs1[i] = cachedLineChars.get(i);
+            }
+            cachedLine = new String(cs1);
         }
-        char[] cs1 = new char[charCount];
-        for (int i = 0; i < charCount; i++) {
-            cs1[i] = cs.get(i);
-        }
-        return new String(cs1);
+        cachedLineChars.clear();
+        return cachedLine != null;
     }
 
     @Override
@@ -93,6 +97,7 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
 
     @Override
     public void close() throws IOException {
+        cachedLineChars = null;
         IOUtils.close(bufferedReader);
     }
 
