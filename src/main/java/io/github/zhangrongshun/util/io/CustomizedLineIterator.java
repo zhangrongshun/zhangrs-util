@@ -63,7 +63,7 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
             finished = true;
             cachedLine = getCacheLine(cs);
             return cachedLine != null;
-        } catch (final IOException ioe) {
+        } catch (IOException ioe) {
             IOUtils.closeQuietly(this, ioe::addSuppressed);
             throw new IllegalStateException(ioe);
         }
