@@ -16,10 +16,13 @@ import java.util.stream.Stream;
 
 public class ExtFiles {
 
-    public static void main(String[] args) {
-        Charset cs = StandardCharsets.UTF_8;
-        Path path = Paths.get("");
-
+    public static void main(String[] args) throws IOException {
+        int i = 0;
+        try (Stream<String> lines = Files.lines(Paths.get("D:\\1.json"), StandardCharsets.UTF_8)) {
+//            lines.forEach(System.out::println);
+            i++;
+        }
+        System.out.println(i);
     }
 
     public static Stream<String> lines(Path path, Charset cs, String lineSeparator) throws IOException {
