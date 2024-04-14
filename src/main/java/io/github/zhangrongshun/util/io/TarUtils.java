@@ -21,8 +21,18 @@ public class TarUtils {
         Assert.notNull(workPath, "workPath");
         Assert.notNull(dest, "dest");
         Assert.notEmpty(paths, "paths");
-        TreeSet<Path> sortedPaths = new TreeSet<>(paths);
+        TreeSet<Path> sortedPaths = new TreeSet<>();
+        for (Path path : paths) {
+            Path normalize = workPath.resolve(path).normalize();
+            Path normalize1 = workPath.relativize(normalize);
+            if (normalize1.toString().contains("..")) {
+                throw new RuntimeException(path.toString());
+            } else {
+                sortedPaths.add(normalize);
+            }
+        }
         try (TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(new BufferedOutputStream(Files.newOutputStream(dest)))) {
+            tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
             for (Path p : sortedPaths) {
                 if (Files.isRegularFile(p)) {
                     putArchiveEntry(workPath, p, tarArchiveOutputStream);
@@ -33,6 +43,7 @@ public class TarUtils {
                             putArchiveEntry(workPath, dir, tarArchiveOutputStream);
                             return super.preVisitDirectory(dir, attrs);
                         }
+
                         @Override
                         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                             putArchiveEntry(workPath, file, tarArchiveOutputStream);
@@ -57,9 +68,10 @@ public class TarUtils {
 
     public static void main(String[] args) {
         TreeSet<Path> objects = new TreeSet<>();
-        objects.add(Paths.get("D:\\1\\新建文件夹"));
-        objects.add(Paths.get("D:\\1\\新建 文本文档 (2).txt"));
-        tar(Paths.get("D:\\1"), Paths.get("D:\\1.tar"), objects);
+        objects.add(Paths.get( "repository"));
+        objects.add(Paths.get(".gradle-enterprise"));
+        objects.add(Paths.get("1.tar"));
+        tar(Paths.get("C:\\Users\\zhangrs\\.m2"), Paths.get("D:\\1.tar"), objects);
     }
 
 }
