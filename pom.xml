@@ -81,6 +81,11 @@
             <artifactId>spring-core</artifactId>
             <version>5.3.31</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.25.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>
