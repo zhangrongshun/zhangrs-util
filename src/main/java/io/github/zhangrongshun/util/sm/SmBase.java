@@ -16,8 +16,8 @@ public class SmBase {
         Provider bc = Security.getProvider(name);
         if (bc == null) {
             Security.addProvider(new BouncyCastleProvider());
-            Provider bc1 = Security.getProvider(name);
-            if (bc1 == null) {
+            bc = Security.getProvider(name);
+            if (bc == null) {
                 throw new SecurityException("BouncyCastle provider not available");
             }
         }
