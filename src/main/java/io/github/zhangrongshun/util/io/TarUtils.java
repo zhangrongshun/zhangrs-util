@@ -1,5 +1,6 @@
 package io.github.zhangrongshun.util.io;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.slf4j.Logger;
@@ -8,36 +9,28 @@ import org.springframework.util.Assert;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class TarUtils {
 
     private static final Logger log = LoggerFactory.getLogger(TarUtils.class);
 
-    public static void tar(Path workPath, Path dest, Set<Path> paths) {
+    public static void tar(Path workPath, Path dest, String... paths) {
         Assert.notNull(workPath, "workPath");
         Assert.notNull(dest, "dest");
         Assert.notEmpty(paths, "paths");
-        TreeSet<Path> sortedPaths = new TreeSet<>();
-        for (Path path : paths) {
-            Path normalize = workPath.resolve(path).normalize();
-            Path normalize1 = workPath.relativize(normalize);
-            if (normalize1.toString().contains("..")) {
-                throw new RuntimeException(path.toString());
-            } else {
-                sortedPaths.add(normalize);
-            }
-        }
         try (TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(new BufferedOutputStream(Files.newOutputStream(dest)))) {
             tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
-            for (Path p : sortedPaths) {
-                if (Files.isRegularFile(p)) {
-                    putArchiveEntry(workPath, p, tarArchiveOutputStream);
-                } else if (Files.isDirectory(p)) {
-                    Files.walkFileTree(p, new SimpleFileVisitor<Path>() {
+            for (String p : paths) {
+                Path path = Paths.get(workPath.toString(), p).normalize();
+                if (Files.isRegularFile(path)) {
+                    putArchiveEntry(workPath, path, tarArchiveOutputStream);
+                } else if (Files.isDirectory(path)) {
+                    Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                         @Override
                         public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                             putArchiveEntry(workPath, dir, tarArchiveOutputStream);
@@ -66,12 +59,23 @@ public class TarUtils {
         tarArchiveOutputStream.closeArchiveEntry();
     }
 
-    public static void main(String[] args) {
-        TreeSet<Path> objects = new TreeSet<>();
-        objects.add(Paths.get( "repository"));
-        objects.add(Paths.get(".gradle-enterprise"));
-        objects.add(Paths.get("1.tar"));
-        tar(Paths.get("C:\\Users\\zhangrs\\.m2"), Paths.get("D:\\1.tar"), objects);
+    public static void main(String[] args) throws IOException {
+//        TreeSet<Path> objects = new TreeSet<>();
+//        objects.add(Paths.get( "repository"));
+//        objects.add(Paths.get(".gradle-enterprise"));
+//        objects.add(Paths.get("1.tar"));
+//        tar(Paths.get("C:\\Users\\zhangrs\\.m2"), Paths.get("D:\\1.tar"), objects);
+//        Files.copy(Paths.get("D:\\1\\"), Paths.get("D:\\2\\"), StandardCopyOption.REPLACE_EXISTING);
+//        Files.walkFileTree(Paths.get("D:\\1\\"), new SimpleFileVisitor<Path>(){
+//
+//        });
+//        tar(Paths.get("D:\\010\\"), Paths.get("D:\\010\\111\\3.tar"), "2.json", "020/1.txt", "020", "020");
+//        Path path = Paths.get("/d/1", "../010").normalize();
+//        System.out.println(path);
+        byte[] bytes = "1287z".getBytes(StandardCharsets.UTF_8);
+        System.out.println(Collections.singletonList(bytes));
+        String s = Hex.encodeHexString(bytes);
+        System.out.println(s);
     }
 
 }
