@@ -1,8 +1,10 @@
 package io.github.zhangrongshun.util.codec;
 
+import org.apache.commons.codec.binary.Base32;
+
 public class Base32Coder {
 
-    private static final org.apache.commons.codec.binary.Base32 BASE32 = new org.apache.commons.codec.binary.Base32(true);
+    private static final Base32 BASE32 = new Base32(true);
 
     public static String encode(byte[] bytes) {
         return encode(bytes, false);
