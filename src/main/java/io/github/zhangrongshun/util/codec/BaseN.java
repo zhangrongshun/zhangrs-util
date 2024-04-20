@@ -4,13 +4,13 @@ import java.math.BigInteger;
 
 public abstract class BaseN {
 
-    private static int radix;
+    private final int radix;
 
     public BaseN(int radix) {
-        BaseN.radix = radix;
+        this.radix = radix;
     }
 
-    public static String encode(byte[] bytes) {
+    public String encode(byte[] bytes) {
         if (bytes == null) {
             return null;
         }
@@ -18,7 +18,7 @@ public abstract class BaseN {
         return bigInteger.toString(radix);
     }
 
-    public static byte[] decode(String s) {
+    public byte[] decode(String s) {
         if (s == null) {
             return null;
         }
