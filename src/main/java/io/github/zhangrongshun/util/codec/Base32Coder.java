@@ -1,6 +1,6 @@
 package io.github.zhangrongshun.util.codec;
 
-public class Base32 {
+public class Base32Coder {
 
     private static final org.apache.commons.codec.binary.Base32 BASE32 = new org.apache.commons.codec.binary.Base32(true);
 
