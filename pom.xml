@@ -96,6 +96,11 @@
             <artifactId>bcprov-jdk18on</artifactId>
             <version>1.78</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>33.0.0-jre</version>
+        </dependency>
     </dependencies>
 
     <repositories>
