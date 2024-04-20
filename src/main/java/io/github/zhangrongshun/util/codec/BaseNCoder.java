@@ -2,11 +2,11 @@ package io.github.zhangrongshun.util.codec;
 
 import java.math.BigInteger;
 
-public class BaseN {
+public class BaseNCoder {
 
     private final int radix;
 
-    private BaseN(int radix) {
+    private BaseNCoder(int radix) {
         this.radix = radix;
     }
 
@@ -44,8 +44,8 @@ public class BaseN {
 
     static class BaseNSupport {
 
-        private static final BaseN base16 = new BaseN(16);
-        private static final BaseN base36 = new BaseN(36);
+        private static final BaseNCoder base16 = new BaseNCoder(16);
+        private static final BaseNCoder base36 = new BaseNCoder(36);
 
     }
 

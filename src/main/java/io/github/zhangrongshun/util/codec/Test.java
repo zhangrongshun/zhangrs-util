@@ -3,9 +3,7 @@ package io.github.zhangrongshun.util.codec;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class Test {
 
@@ -22,11 +20,11 @@ public class Test {
 //        System.out.println(s1);
         char[] chars = Hex.encodeHex("10".getBytes(StandardCharsets.UTF_8));
         System.out.println(new String(chars));
-        String s1 = BaseN.encodeBase16("10".getBytes(StandardCharsets.UTF_8));
+        String s1 = BaseNCoder.encodeBase16("10".getBytes(StandardCharsets.UTF_8));
         System.out.println(s1);
         byte[] bytes1 = Hex.decodeHex(s1);
         System.out.println(new String(bytes1, StandardCharsets.UTF_8));
-        byte[] bytes2 = BaseN.decodeBase16(s1);
+        byte[] bytes2 = BaseNCoder.decodeBase16(s1);
         System.out.println(new String(bytes2, StandardCharsets.UTF_8));
     }
 
