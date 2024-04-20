@@ -22,7 +22,6 @@ public class SmBase {
             }
         }
         logger.info("BouncyCastle provider available: {}", bc);
-        System.out.println(bc);
     }
 
 }
