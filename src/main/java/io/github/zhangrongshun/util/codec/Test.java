@@ -3,6 +3,7 @@ package io.github.zhangrongshun.util.codec;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 public class Test {
@@ -26,6 +27,11 @@ public class Test {
         System.out.println(new String(bytes1, StandardCharsets.UTF_8));
         byte[] bytes2 = BaseNCoder.decodeBase16(s1);
         System.out.println(new String(bytes2, StandardCharsets.UTF_8));
+        BigInteger bigInteger = new BigInteger("999999999999999999999999999999999");
+        System.out.println(bigInteger.toString(36));
+        BigInteger bigInteger1 = new BigInteger("zzzzzz", 36);
+        System.out.println(bigInteger1.toString(10));
+        System.out.println(bigInteger1.toString(10).length());
     }
 
 }

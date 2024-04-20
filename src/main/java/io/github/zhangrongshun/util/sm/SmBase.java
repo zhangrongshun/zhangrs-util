@@ -21,7 +21,9 @@ public class SmBase {
                 throw new SecurityException("BouncyCastle provider not available");
             }
         }
-        logger.info("BouncyCastle provider available: {}", bc);
+        if (logger.isInfoEnabled()) {
+            logger.info("BouncyCastle provider available: {}", bc);
+        }
     }
 
 }
