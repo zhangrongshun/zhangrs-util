@@ -1,5 +1,7 @@
 package io.github.zhangrongshun.util.codec;
 
+import io.github.zhangrongshun.util.exception.DecoderException;
+
 import java.math.BigInteger;
 
 public class BaseNCoder {
@@ -18,15 +20,19 @@ public class BaseNCoder {
         return bigInteger.toString(radix);
     }
 
-    private byte[] decode(String s) {
+    private byte[] decode(String s) throws DecoderException {
         if (s == null) {
             return null;
         }
-        BigInteger bigInteger = new BigInteger(s, radix);
-        return bigInteger.toByteArray();
+        try {
+            BigInteger bigInteger = new BigInteger(s, radix);
+            return bigInteger.toByteArray();
+        } catch (NumberFormatException e) {
+            throw new DecoderException("Illegal string " + s);
+        }
     }
 
-    public static byte[] decodeBase16(final String base36Data) {
+    public static byte[] decodeBase16(final String base36Data) throws DecoderException {
         return BaseNSupport.base16.decode(base36Data);
     }
 
@@ -34,7 +40,7 @@ public class BaseNCoder {
         return BaseNSupport.base16.encode(binaryData);
     }
 
-    public static byte[] decodeBase36(final String base36Data) {
+    public static byte[] decodeBase36(final String base36Data) throws DecoderException {
         return BaseNSupport.base36.decode(base36Data);
     }
 
