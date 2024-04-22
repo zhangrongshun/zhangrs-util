@@ -1,6 +1,6 @@
 package io.github.zhangrongshun.util.codec;
 
-import io.github.zhangrongshun.util.exception.DecoderException;
+import io.github.zhangrongshun.util.codec.exception.DecoderException;
 
 import java.math.BigInteger;
 

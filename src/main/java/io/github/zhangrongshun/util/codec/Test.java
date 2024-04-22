@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Test {
 
-    public static void main(String[] args) throws DecoderException, io.github.zhangrongshun.util.exception.DecoderException {
+    public static void main(String[] args) throws DecoderException, io.github.zhangrongshun.util.codec.exception.DecoderException {
 //        String s = BaseN.encodeBase32("10".getBytes(StandardCharsets.UTF_8));
 //        System.out.println(s);
 //        byte[] bytes = BaseN.decodeBase32(s);

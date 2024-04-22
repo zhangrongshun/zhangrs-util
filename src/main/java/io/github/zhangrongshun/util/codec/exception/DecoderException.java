@@ -1,4 +1,4 @@
-package io.github.zhangrongshun.util.exception;
+package io.github.zhangrongshun.util.codec.exception;
 
 public class DecoderException extends Exception {
 
