@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 public class NumberUtils {
 
-    public static String convert(String string, int radixFrom, int radixTo) {
+    public static String transferRadix(String string, int radixFrom, int radixTo) {
         return new BigInteger(string, radixFrom).toString(radixTo);
     }
 
