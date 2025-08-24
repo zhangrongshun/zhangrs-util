@@ -9,20 +9,24 @@ import java.time.Duration;
 public class RateLimiterWrapper {
 
     private final RateLimiter rateLimiter;
-    private final AtomicDouble currentRate;
+    private final AtomicDouble permitsPerSecond;
 
     public RateLimiterWrapper(double permitsPerSecond) {
         this.rateLimiter = RateLimiter.create(permitsPerSecond);
-        currentRate = new AtomicDouble(permitsPerSecond);
+        this.permitsPerSecond = new AtomicDouble(permitsPerSecond);
     }
 
     public void updateRate(double permitsPerSecond) {
-        double CurrentPermitsPerSecond = currentRate.get();
-        if (CurrentPermitsPerSecond != permitsPerSecond) {
-            if (currentRate.compareAndSet(CurrentPermitsPerSecond, permitsPerSecond)) {
+        double currentPermitsPerSecond = this.permitsPerSecond.get();
+        if (currentPermitsPerSecond != permitsPerSecond) {
+            if (this.permitsPerSecond.compareAndSet(currentPermitsPerSecond, permitsPerSecond)) {
                 rateLimiter.setRate(permitsPerSecond);
             }
         }
+    }
+
+    public double getPermitsPerSecond() {
+        return permitsPerSecond.get();
     }
 
     public void acquire() {
