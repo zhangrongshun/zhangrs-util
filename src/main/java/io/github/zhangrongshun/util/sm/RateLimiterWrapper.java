@@ -16,6 +16,11 @@ public class RateLimiterWrapper {
         this.permitsPerSecond = new AtomicDouble(permitsPerSecond);
     }
 
+    public RateLimiterWrapper(double permitsPerSecond, Duration warmupPeriod) {
+        this.rateLimiter = RateLimiter.create(permitsPerSecond, warmupPeriod);
+        this.permitsPerSecond = new AtomicDouble(permitsPerSecond);
+    }
+
     public void updateRate(double permitsPerSecond) {
         double currentPermitsPerSecond = this.permitsPerSecond.get();
         if (currentPermitsPerSecond != permitsPerSecond) {
