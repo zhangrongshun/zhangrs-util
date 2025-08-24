@@ -49,8 +49,20 @@ public class RateLimiterWrapper {
         return rateLimiter.tryAcquire();
     }
 
+    public boolean tryAcquire(int permits) {
+        return rateLimiter.tryAcquire(permits);
+    }
+
     public boolean tryAcquire(Duration timeout) {
         return rateLimiter.tryAcquire(timeout);
+    }
+
+    public boolean tryAcquire(int permits, Duration timeout) {
+        return rateLimiter.tryAcquire(permits, timeout);
+    }
+
+    public String getStatus() {
+        return String.format("Rate: %.2f permits/second", getPermitsPerSecond());
     }
 
     public static class Builder {
@@ -61,6 +73,9 @@ public class RateLimiterWrapper {
         }
 
         public Builder permitsPerSecond(double permitsPerSecond) {
+            if (permitsPerSecond <= 0) {
+                throw new IllegalArgumentException("permitsPerSecond must be positive");
+            }
             this.permitsPerSecond = permitsPerSecond;
             return this;
         }
@@ -71,10 +86,8 @@ public class RateLimiterWrapper {
         }
 
         public RateLimiterWrapper build() {
-            if (permitsPerSecond <= 0) {
-                throw new IllegalArgumentException("permitsPerSecond must be positive");
-            }
             return new RateLimiterWrapper(this);
         }
     }
+
 }
