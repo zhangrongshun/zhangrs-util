@@ -1,5 +1,6 @@
 package io.github.zhangrongshun.util.sm;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.google.common.util.concurrent.RateLimiter;
 
 import java.time.Duration;
@@ -8,20 +9,18 @@ import java.time.Duration;
 public class RateLimiterWrapper {
 
     private final RateLimiter rateLimiter;
-    private volatile double permitsPerSecond;
+    private final AtomicDouble currentRate;
 
     public RateLimiterWrapper(double permitsPerSecond) {
-        this.permitsPerSecond = permitsPerSecond;
         this.rateLimiter = RateLimiter.create(permitsPerSecond);
+        currentRate = new AtomicDouble(permitsPerSecond);
     }
 
     public void updateRate(double permitsPerSecond) {
-        if (this.permitsPerSecond != permitsPerSecond) {
-            synchronized (this) {
-                if (this.permitsPerSecond != permitsPerSecond) {
-                    this.permitsPerSecond = permitsPerSecond;
-                    this.rateLimiter.setRate(permitsPerSecond);
-                }
+        double CurrentPermitsPerSecond = currentRate.get();
+        if (CurrentPermitsPerSecond != permitsPerSecond) {
+            if (currentRate.compareAndSet(CurrentPermitsPerSecond, permitsPerSecond)) {
+                rateLimiter.setRate(permitsPerSecond);
             }
         }
     }
