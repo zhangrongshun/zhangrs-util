@@ -1,3 +1,4 @@
+import com.google.common.util.concurrent.AtomicDouble;
 import io.github.zhangrongshun.util.sm.RateLimiterWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -6,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class RateLimiterWrapperTest {
@@ -28,7 +30,7 @@ public class RateLimiterWrapperTest {
             final int index = i;
             executorService.submit(() -> {
                 try {
-                    double newRate = 9.0;
+                    double newRate = 0.3;
                     // 每个线程更新不同的速率值
                     rateLimiter.updateRate(newRate);
                     updateCount.incrementAndGet();
@@ -100,5 +102,17 @@ public class RateLimiterWrapperTest {
         System.out.println("Total acquires: " + acquireCount.get());
         System.out.println("Total updates: " + updateCount.get());
         System.out.println("Final rate: " + rateLimiter.getPermitsPerSecond());
+    }
+
+
+    @Test
+    public void testConcurrentAcquireAndUpdateRate2() throws InterruptedException {
+        AtomicDouble rate = new AtomicDouble(0.1);
+        double andAdd = rate.addAndGet(0.2);
+        System.out.println(andAdd);
+        AtomicReference<Double> rate2 = new AtomicReference<>(0.1);
+        double updateAndGet = rate2.updateAndGet(d -> d + 0.2);
+        System.out.println(updateAndGet);
+        boolean b = rate2.compareAndSet(0.1, 0.2);
     }
 }

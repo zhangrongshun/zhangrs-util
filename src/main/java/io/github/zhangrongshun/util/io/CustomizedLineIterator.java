@@ -29,7 +29,7 @@ public class CustomizedLineIterator implements Iterator<String>, Closeable {
             throw new IllegalArgumentException("lineSeparator");
         }
         this.lineSeparator = lineSeparator;
-        this.lineSeparatorCharsCount = (int) lineSeparator.chars().count();
+        this.lineSeparatorCharsCount = lineSeparator.length();
         if (reader instanceof BufferedReader) {
             bufferedReader = (BufferedReader) reader;
         } else {
