@@ -1,7 +1,6 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 密码生成工具类
@@ -54,16 +53,16 @@ public class PasswordGenerator {
         return source.charAt(index);
     }
 
-    public static void main(String[] args) {
-        long l = System.nanoTime();
-        int i1 = 100000000;
-        for (int i = 0; i < i1; i++) {
-            generatePassword(24);
-        }
-        long l1 = System.nanoTime() - l;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-        System.out.println(seconds);
-        System.out.println(i1 / seconds);
-    }
+//    public static void main(String[] args) {
+//        long l = System.nanoTime();
+//        int i1 = 1000000000;
+//        for (int i = 0; i < i1; i++) {
+//            generatePassword(10);
+//        }
+//        long l1 = System.nanoTime() - l;
+//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+//        System.out.println(seconds);
+//        System.out.println(i1 / seconds);
+//    }
 
 }
