@@ -13,8 +13,8 @@ public class PasswordGenerator {
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
     private static final String SPECIAL_CHARACTERS = "!@#$%^&*_?";
-    private static final String FIRST_CHAR = LOWERCASE + UPPERCASE;
-    private static final String ALL_CHARS = LOWERCASE + UPPERCASE + DIGITS + SPECIAL_CHARACTERS;
+    private static final String FIRST_CHARACTERS = LOWERCASE + UPPERCASE;
+    private static final String ALL_CHARACTERS = LOWERCASE + UPPERCASE + DIGITS + SPECIAL_CHARACTERS;
 
     public static String generatePassword(int length) {
         if (length < 9) {
@@ -24,7 +24,7 @@ public class PasswordGenerator {
         for (int i = 0; i < length; i++) {
             switch (i) {
                 case 0:
-                    chars[i] = getRandomChar(FIRST_CHAR);
+                    chars[i] = getRandomChar(FIRST_CHARACTERS);
                     break;
                 case 1:
                     chars[i] = Character.isUpperCase(chars[0]) ? getRandomChar(LOWERCASE) : getRandomChar(UPPERCASE);
@@ -37,7 +37,7 @@ public class PasswordGenerator {
                     break;
                 default:
                     for (; ; ) {
-                        char randomChar = getRandomChar(ALL_CHARS);
+                        char randomChar = getRandomChar(ALL_CHARACTERS);
                         if (randomChar != chars[i - 1]) {
                             chars[i] = randomChar;
                             break;
