@@ -1,6 +1,7 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 密码生成工具类
@@ -9,8 +10,6 @@ import java.security.SecureRandom;
 public class PasswordGenerator {
 
     private static final SecureRandom RANDOM = new SecureRandom();
-
-    // 字符集定义
     private static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
     private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String DIGITS = "0123456789";
@@ -38,8 +37,13 @@ public class PasswordGenerator {
                     chars[i] = getRandomChar(SPECIAL_CHARACTERS);
                     break;
                 default:
-                    chars[i] = getRandomChar(ALL_CHARS);
-                    break;
+                    for (; ; ) {
+                        char randomChar = getRandomChar(ALL_CHARS);
+                        if (randomChar != chars[i - 1]) {
+                            chars[i] = randomChar;
+                            break;
+                        }
+                    }
             }
         }
         return new String(chars);
@@ -51,7 +55,15 @@ public class PasswordGenerator {
     }
 
     public static void main(String[] args) {
-        System.out.println(generatePassword(24));
+        long l = System.nanoTime();
+        int i1 = 100000000;
+        for (int i = 0; i < i1; i++) {
+            generatePassword(24);
+        }
+        long l1 = System.nanoTime() - l;
+        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+        System.out.println(seconds);
+        System.out.println(i1 / seconds);
     }
 
 }
