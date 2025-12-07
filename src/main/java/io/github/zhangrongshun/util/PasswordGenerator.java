@@ -38,18 +38,6 @@ public class PasswordGenerator {
                 }
             }
         }
-//        for (int i = 1; i < length; i++) {
-//            for (; ; ) {
-//                int j = RANDOM.nextInt(length - i) + i;
-//                char aChar = chars[j];
-//                if (aChar != chars[i - 1] && aChar != chars[i]) {
-//                    char temp = chars[i];
-//                    chars[i] = aChar;
-//                    chars[j] = temp;
-//                    break;
-//                }
-//            }
-//        }
         return new String(chars);
     }
 
