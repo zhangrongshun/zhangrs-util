@@ -28,9 +28,7 @@ public class PasswordGenerator {
         chars[3] = getRandomChar(SPECIAL_CHARACTERS);
         for (int i = 4; i < length; i++) {
             for (; ; ) {
-                char randomChar = getRandomChar(ALL_CHARACTERS);
-                if (randomChar != chars[i - 1]) {
-                    chars[i] = randomChar;
+                if ((chars[i] = getRandomChar(ALL_CHARACTERS)) != chars[i - 1]) {
                     break;
                 }
             }
