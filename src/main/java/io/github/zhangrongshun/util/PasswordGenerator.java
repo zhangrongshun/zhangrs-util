@@ -23,17 +23,44 @@ public class PasswordGenerator {
         }
         char[] chars = new char[length];
         chars[0] = getRandomChar(ALPHABETIC_CHARACTERS);
-        chars[1] = isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS);
-        chars[2] = getRandomChar(DIGIT_CHARACTERS);
-        chars[3] = getRandomChar(SPECIAL_CHARACTERS);
-        for (int i = 4; i < length; i++) {
+        pad(chars, isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS), length);
+        pad(chars, getRandomChar(DIGIT_CHARACTERS), length);
+        pad(chars, getRandomChar(SPECIAL_CHARACTERS), length);
+        for (int i = 1; i < length; i++) {
+            if (chars[i] != '\u0000') {
+                continue;
+            }
             for (; ; ) {
-                if ((chars[i] = getRandomChar(ALL_CHARACTERS)) != chars[i - 1]) {
+                char randomChar = getRandomChar(ALL_CHARACTERS);
+                if (randomChar != chars[i - 1] && ((i < length - 1 && randomChar != chars[i + 1]) || i == length - 1)) {
+                    chars[i] = randomChar;
                     break;
                 }
             }
         }
+//        for (int i = 1; i < length; i++) {
+//            for (; ; ) {
+//                int j = RANDOM.nextInt(length - i) + i;
+//                char aChar = chars[j];
+//                if (aChar != chars[i - 1] && aChar != chars[i]) {
+//                    char temp = chars[i];
+//                    chars[i] = aChar;
+//                    chars[j] = temp;
+//                    break;
+//                }
+//            }
+//        }
         return new String(chars);
+    }
+
+    private static void pad(char[] chars, char c, int length) {
+        for (; ; ) {
+            int i = RANDOM.nextInt(length);
+            if (chars[i] == '\u0000') {
+                chars[i] = c;
+                break;
+            }
+        }
     }
 
     private static boolean isUpperCase(char c) {
@@ -47,15 +74,16 @@ public class PasswordGenerator {
 
     public static void main(String[] args) {
         long l = System.nanoTime();
-        int i1 = 1000000000;
+        int i1 = 10;
         for (int i = 0; i < i1; i++) {
-            generatePassword(5);
+            String s = generatePassword(32);
+            System.out.println(s);
         }
-        long l1 = System.nanoTime() - l;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-        System.out.println(seconds);
-        System.out.println(i1 / seconds);
-//        generatePassword(5);
+//        long l1 = System.nanoTime() - l;
+//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+//        System.out.println(seconds);
+//        System.out.println(i1 / seconds);
+////        generatePassword(5);
     }
 
 }
