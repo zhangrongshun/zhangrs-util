@@ -23,7 +23,7 @@ public class PasswordGenerator {
         }
         char[] chars = new char[length];
         chars[0] = getRandomChar(ALPHABETIC_CHARACTERS);
-        chars[1] = Character.isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS);
+        chars[1] = isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS);
         chars[2] = getRandomChar(DIGIT_CHARACTERS);
         chars[3] = getRandomChar(SPECIAL_CHARACTERS);
         for (int i = 4; i < length; i++) {
@@ -34,6 +34,10 @@ public class PasswordGenerator {
             }
         }
         return new String(chars);
+    }
+
+    private static boolean isUpperCase(char c) {
+        return (c >= 'A') && (c <= 'Z');
     }
 
     private static char getRandomChar(String source) {
