@@ -18,28 +18,20 @@ public class PasswordGenerator {
     private static final String ALL_CHARACTERS = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + DIGIT_CHARACTERS + SPECIAL_CHARACTERS;
 
     public static String generatePassword(int length) {
-        if (length < 1) {
-            throw new IllegalArgumentException("密码长度不能小于1");
+        if (length < 5) {
+            throw new IllegalArgumentException("Password length must be at least 5.");
         }
         char[] chars = new char[length];
         chars[0] = getRandomChar(ALPHABETIC_CHARACTERS);
-        if (length > 1) {
-            chars[1] = Character.isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS);
-        }
-        if (length > 2) {
-            chars[2] = getRandomChar(DIGIT_CHARACTERS);
-        }
-        if (length > 3) {
-            chars[3] = getRandomChar(SPECIAL_CHARACTERS);
-        }
-        if (length > 4) {
-            for (int i = 4; i < length; i++) {
-                for (; ; ) {
-                    char randomChar = getRandomChar(ALL_CHARACTERS);
-                    if (randomChar != chars[i - 1]) {
-                        chars[i] = randomChar;
-                        break;
-                    }
+        chars[1] = Character.isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS);
+        chars[2] = getRandomChar(DIGIT_CHARACTERS);
+        chars[3] = getRandomChar(SPECIAL_CHARACTERS);
+        for (int i = 4; i < length; i++) {
+            for (; ; ) {
+                char randomChar = getRandomChar(ALL_CHARACTERS);
+                if (randomChar != chars[i - 1]) {
+                    chars[i] = randomChar;
+                    break;
                 }
             }
         }
@@ -55,7 +47,7 @@ public class PasswordGenerator {
         long l = System.nanoTime();
         int i1 = 1000000000;
         for (int i = 0; i < i1; i++) {
-            generatePassword(10);
+            generatePassword(5);
         }
         long l1 = System.nanoTime() - l;
         long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
