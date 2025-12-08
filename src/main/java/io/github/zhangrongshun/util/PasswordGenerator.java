@@ -16,6 +16,7 @@ public class PasswordGenerator {
     private static final String SPECIAL_CHARACTERS = "!@#$%^&*_?";
     private static final String ALPHABETIC_CHARACTERS = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS;
     private static final String ALL_CHARACTERS = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + DIGIT_CHARACTERS + SPECIAL_CHARACTERS;
+    private static final char EMPTY_CHAR = '\u0000';
 
     public static String generatePassword(int length) {
         if (length < 5) {
@@ -27,7 +28,7 @@ public class PasswordGenerator {
         pad(chars, getRandomChar(DIGIT_CHARACTERS), length);
         pad(chars, getRandomChar(SPECIAL_CHARACTERS), length);
         for (int i = 1; i < length; i++) {
-            if (chars[i] != '\u0000') {
+            if (chars[i] != EMPTY_CHAR) {
                 continue;
             }
             for (; ; ) {
@@ -44,7 +45,7 @@ public class PasswordGenerator {
     private static void pad(char[] chars, char c, int length) {
         for (; ; ) {
             int i = RANDOM.nextInt(length);
-            if (chars[i] == '\u0000') {
+            if (chars[i] == EMPTY_CHAR) {
                 chars[i] = c;
                 break;
             }
@@ -62,15 +63,15 @@ public class PasswordGenerator {
 
     public static void main(String[] args) {
         long l = System.nanoTime();
-        int i1 = 10;
+        int i1 = 10000000;
         for (int i = 0; i < i1; i++) {
-            String s = generatePassword(32);
-            System.out.println(s);
+            String s = generatePassword(100);
+//            System.out.println(s);
         }
-//        long l1 = System.nanoTime() - l;
-//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-//        System.out.println(seconds);
-//        System.out.println(i1 / seconds);
+        long l1 = System.nanoTime() - l;
+        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+        System.out.println(seconds);
+        System.out.println(i1 / seconds);
 ////        generatePassword(5);
     }
 
