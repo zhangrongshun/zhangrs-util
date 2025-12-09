@@ -1,7 +1,6 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
 
 public class PasswordGenerator {
 
@@ -40,9 +39,10 @@ public class PasswordGenerator {
 
     private static void pad(char[] chars, String str) {
         for (; ; ) {
-            int i = RANDOM.nextInt(str.length());
-            if (chars[i] == EMPTY_CHAR) {
-                chars[i] = str.charAt(i);
+            int i1 = RANDOM.nextInt(chars.length);
+            if (chars[i1] == EMPTY_CHAR) {
+                int i = RANDOM.nextInt(str.length());
+                chars[i1] = str.charAt(i);
                 break;
             }
         }
@@ -58,17 +58,18 @@ public class PasswordGenerator {
     }
 
     public static void main(String[] args) {
-        long l = System.nanoTime();
-        int i1 = 10000000;
-        for (int i = 0; i < i1; i++) {
-            String s = generatePassword(100);
-//            System.out.println(s);
-        }
-        long l1 = System.nanoTime() - l;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-        System.out.println(seconds);
-        System.out.println(i1 / seconds);
-////        generatePassword(5);
+//        long l = System.nanoTime();
+//        int i1 = 10000000;
+//        for (int i = 0; i < i1; i++) {
+//            String s = generatePassword(100);
+////            System.out.println(s);
+//        }
+//        long l1 = System.nanoTime() - l;
+//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+//        System.out.println(seconds);
+//        System.out.println(i1 / seconds);
+        String s = generatePassword(50);
+        System.out.println(s);
     }
 
 }
