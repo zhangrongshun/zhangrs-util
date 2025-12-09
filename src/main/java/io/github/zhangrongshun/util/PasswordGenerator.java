@@ -3,10 +3,6 @@ package io.github.zhangrongshun.util;
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
-/**
- * 密码生成工具类
- * 生成符合安全要求的随机密码
- */
 public class PasswordGenerator {
 
     private static final SecureRandom RANDOM = new SecureRandom();
@@ -24,9 +20,9 @@ public class PasswordGenerator {
         }
         char[] chars = new char[length];
         chars[0] = getRandomChar(ALPHABETIC_CHARACTERS);
-        pad(chars, isUpperCase(chars[0]) ? getRandomChar(LOWERCASE_CHARACTERS) : getRandomChar(UPPERCASE_CHARACTERS), length);
-        pad(chars, getRandomChar(DIGIT_CHARACTERS), length);
-        pad(chars, getRandomChar(SPECIAL_CHARACTERS), length);
+        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS);
+        pad(chars, DIGIT_CHARACTERS);
+        pad(chars, SPECIAL_CHARACTERS);
         for (int i = 1; i < length; i++) {
             if (chars[i] != EMPTY_CHAR) {
                 continue;
@@ -42,11 +38,11 @@ public class PasswordGenerator {
         return new String(chars);
     }
 
-    private static void pad(char[] chars, char c, int length) {
+    private static void pad(char[] chars, String str) {
         for (; ; ) {
-            int i = RANDOM.nextInt(length);
+            int i = RANDOM.nextInt(str.length());
             if (chars[i] == EMPTY_CHAR) {
-                chars[i] = c;
+                chars[i] = str.charAt(i);
                 break;
             }
         }
