@@ -18,14 +18,14 @@ public class PasswordGenerator2 {
             throw new IllegalArgumentException("Password length must be at least 5.");
         }
         char[] chars = new char[length];
-        MyPredicate myPredicate = (previous, current, next, target) -> {
-            if (current != EMPTY_CHAR) {
+        MyPredicate myPredicate = (preceding, target, following, newValue) -> {
+            if (target != EMPTY_CHAR) {
                 return false;
             }
-            if (previous == EMPTY_CHAR || next == EMPTY_CHAR) {
+            if (preceding == EMPTY_CHAR || following == EMPTY_CHAR) {
                 return true;
             }
-            return target != previous && target != next;
+            return newValue != preceding && newValue != following;
         };
         pad(chars, ALPHABETIC_CHARACTERS, 0, myPredicate, length);
         pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, myPredicate, length);
@@ -71,7 +71,7 @@ public class PasswordGenerator2 {
 
     @FunctionalInterface
     public interface MyPredicate {
-        boolean test(char previous, char current, char next, char target);
+        boolean test(char preceding, char target, char following, char newValue);
     }
 
     private static boolean isUpperCase(char c) {
