@@ -1,7 +1,6 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
 
 public class PasswordGenerator2 {
 
@@ -39,30 +38,31 @@ public class PasswordGenerator2 {
     }
 
     private static void pad(char[] chars, String str, int targetIndex, MyPredicate predicate, int length) {
-        if (targetIndex >= 0 && chars[targetIndex] != EMPTY_CHAR) {
-            return;
-        }
-        for (; ; ) {
-            if (targetIndex < 0) {
-                for (; ; ) {
-                    int tempIndex = RANDOM.nextInt(chars.length);
-                    if (chars[tempIndex] == EMPTY_CHAR) {
-                        targetIndex = tempIndex;
-                        break;
-                    }
+        if (targetIndex < 0) {
+            for (; ; ) {
+                int tempIndex = RANDOM.nextInt(chars.length);
+                if (chars[tempIndex] == EMPTY_CHAR) {
+                    targetIndex = tempIndex;
+                    break;
                 }
             }
-            boolean flag;
+        } else {
+            if (chars[targetIndex] != EMPTY_CHAR) {
+                return;
+            }
+        }
+        for (; ; ) {
             int i = RANDOM.nextInt(str.length());
             char target = str.charAt(i);
-            if (targetIndex == 0) {
-                flag = predicate.test(EMPTY_CHAR, chars[targetIndex], chars[targetIndex + 1], target);
-            } else if (targetIndex == length - 1) {
-                flag = predicate.test(chars[targetIndex - 1], chars[targetIndex], EMPTY_CHAR, target);
-            } else {
-                flag = predicate.test(chars[targetIndex - 1], chars[targetIndex], chars[targetIndex + 1], target);
+            char preceding = EMPTY_CHAR;
+            char following = EMPTY_CHAR;
+            if (targetIndex < length - 1) {
+                following = chars[targetIndex + 1];
             }
-            if (flag) {
+            if (targetIndex > 0) {
+                preceding = chars[targetIndex - 1];
+            }
+            if (predicate.test(preceding, chars[targetIndex], following, target)) {
                 chars[targetIndex] = target;
                 break;
             }
@@ -80,17 +80,17 @@ public class PasswordGenerator2 {
 
     public static void main(String[] args) {
         long l = System.nanoTime();
-        int i1 = 10000000;
-        for (int i = 0; i < i1; i++) {
+        int i1 = 100000000;
+        for (int i = 0; i < 10; i++) {
             String s = generatePassword(100);
-//            System.out.println(s);
+            System.out.println(s);
         }
-        long l1 = System.nanoTime() - l;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-        System.out.println(seconds);
-        System.out.println(i1 / seconds);
-//        String s = generatePassword(5);
-//        System.out.println(s);
+//        long l1 = System.nanoTime() - l;
+//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+//        System.out.println(seconds);
+//        System.out.println(i1 / seconds);
+////        String s = generatePassword(5);
+////        System.out.println(s);
     }
 
 }
