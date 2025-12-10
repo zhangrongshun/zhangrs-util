@@ -1,6 +1,7 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 
 public class PasswordGenerator2 {
 
@@ -18,21 +19,13 @@ public class PasswordGenerator2 {
             throw new IllegalArgumentException("Password length must be at least 5.");
         }
         char[] chars = new char[length];
-        MyPredicate myPredicate = (preceding, target, following, newValue) -> {
-            if (target != EMPTY_CHAR) {
-                return false;
-            }
-            if (preceding == EMPTY_CHAR || following == EMPTY_CHAR) {
-                return true;
-            }
-            return newValue != preceding && newValue != following;
-        };
-        pad(chars, ALPHABETIC_CHARACTERS, 0, myPredicate, length);
-        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, myPredicate, length);
-        pad(chars, DIGIT_CHARACTERS, -1, myPredicate, length);
-        pad(chars, SPECIAL_CHARACTERS, -1, myPredicate, length);
+        MyPredicate predicate = PasswordGenerator2::test;
+        pad(chars, ALPHABETIC_CHARACTERS, 0, predicate, length);
+        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, predicate, length);
+        pad(chars, DIGIT_CHARACTERS, -1, predicate, length);
+        pad(chars, SPECIAL_CHARACTERS, -1, predicate, length);
         for (int i = 1; i < length; i++) {
-            pad(chars, ALL_CHARACTERS, i, myPredicate, length);
+            pad(chars, ALL_CHARACTERS, i, predicate, length);
         }
         return new String(chars);
     }
@@ -69,6 +62,16 @@ public class PasswordGenerator2 {
         }
     }
 
+    private static boolean test(char preceding, char target, char following, char newValue) {
+        if (target != EMPTY_CHAR) {
+            return false;
+        }
+        if (preceding == EMPTY_CHAR || following == EMPTY_CHAR) {
+            return true;
+        }
+        return newValue != preceding && newValue != following;
+    }
+
     @FunctionalInterface
     public interface MyPredicate {
         boolean test(char preceding, char target, char following, char newValue);
@@ -81,16 +84,16 @@ public class PasswordGenerator2 {
     public static void main(String[] args) {
         long l = System.nanoTime();
         int i1 = 100000000;
-        for (int i = 0; i < 10; i++) {
-            String s = generatePassword(100);
-            System.out.println(s);
+        for (int i = 0; i < i1; i++) {
+            String s = generatePassword(5);
+//            System.out.println(s);
         }
-//        long l1 = System.nanoTime() - l;
-//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-//        System.out.println(seconds);
-//        System.out.println(i1 / seconds);
-////        String s = generatePassword(5);
-////        System.out.println(s);
+        long l1 = System.nanoTime() - l;
+        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+        System.out.println(seconds);
+        System.out.println(i1 / seconds);
+//        String s = generatePassword(5);
+//        System.out.println(s);
     }
 
 }
