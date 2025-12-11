@@ -1,7 +1,6 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
 
 public class PasswordGenerator2 {
 
@@ -66,7 +65,7 @@ public class PasswordGenerator2 {
         if (target != EMPTY_CHAR) {
             return false;
         }
-        if (preceding == EMPTY_CHAR || following == EMPTY_CHAR) {
+        if (preceding == EMPTY_CHAR && following == EMPTY_CHAR) {
             return true;
         }
         return newValue != preceding && newValue != following;
@@ -84,16 +83,16 @@ public class PasswordGenerator2 {
     public static void main(String[] args) {
         long l = System.nanoTime();
         int i1 = 100000000;
-        for (int i = 0; i < i1; i++) {
+        for (int i = 0; i < 1; i++) {
             String s = generatePassword(5);
 //            System.out.println(s);
         }
-        long l1 = System.nanoTime() - l;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-        System.out.println(seconds);
-        System.out.println(i1 / seconds);
-//        String s = generatePassword(5);
-//        System.out.println(s);
+//        long l1 = System.nanoTime() - l;
+//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+//        System.out.println(seconds);
+//        System.out.println(i1 / seconds);
+////        String s = generatePassword(5);
+////        System.out.println(s);
     }
 
 }
