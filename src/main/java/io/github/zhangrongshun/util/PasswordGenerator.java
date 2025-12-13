@@ -14,7 +14,7 @@ public class PasswordGenerator {
     private static final char EMPTY_CHAR = '\u0000';
 
     public static String generatePassword(int length) {
-        if (length < 5) {
+        if (length < 4) {
             throw new IllegalArgumentException("Password length must be at least 5.");
         }
         char[] chars = new char[length];
@@ -83,8 +83,8 @@ public class PasswordGenerator {
     public static void main(String[] args) {
         long l = System.nanoTime();
         int i1 = 100000000;
-        for (int i = 0; i < 10; i++) {
-            String s = generatePassword(50);
+        for (int i = 0; i < 1; i++) {
+            String s = generatePassword(3);
             System.out.println(s);
         }
 //        long l1 = System.nanoTime() - l;
