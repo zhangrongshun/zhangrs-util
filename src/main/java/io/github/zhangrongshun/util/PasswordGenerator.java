@@ -26,18 +26,17 @@ public class PasswordGenerator {
             throw new IllegalArgumentException("Password length must be at least 4.");
         }
         char[] chars = new char[length];
-        MyPredicate predicate = PasswordGenerator::test;
-        pad(chars, ALPHABETIC_CHARACTERS, 0, predicate, length);
-        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, predicate, length);
-        pad(chars, DIGIT_CHARACTERS, -1, predicate, length);
-        pad(chars, SPECIAL_CHARACTERS, -1, predicate, length);
+        pad(chars, ALPHABETIC_CHARACTERS, 0, length);
+        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, length);
+        pad(chars, DIGIT_CHARACTERS, -1, length);
+        pad(chars, SPECIAL_CHARACTERS, -1, length);
         for (int i = 1; i < length; i++) {
-            pad(chars, ALL_CHARACTERS, i, predicate, length);
+            pad(chars, ALL_CHARACTERS, i, length);
         }
         return new String(chars);
     }
 
-    private static void pad(char[] chars, String str, int targetIndex, MyPredicate predicate, int length) {
+    private static void pad(char[] chars, String str, int targetIndex, int length) {
         if (targetIndex < 0) {
             for (; ; ) {
                 int tempIndex = RANDOM.nextInt(chars.length);
@@ -62,14 +61,14 @@ public class PasswordGenerator {
             if (targetIndex > 0) {
                 preceding = chars[targetIndex - 1];
             }
-            if (predicate.test(preceding, chars[targetIndex], following, target)) {
+            if (canPlaceChar(preceding, chars[targetIndex], following, target)) {
                 chars[targetIndex] = target;
                 break;
             }
         }
     }
 
-    private static boolean test(char preceding, char target, char following, char newValue) {
+    private static boolean canPlaceChar(char preceding, char target, char following, char newValue) {
         if (target != EMPTY_CHAR) {
             return false;
         }
@@ -79,20 +78,17 @@ public class PasswordGenerator {
         return newValue != preceding && newValue != following;
     }
 
-    public interface MyPredicate {
-        boolean test(char preceding, char target, char following, char newValue);
-    }
-
     private static boolean isUpperCase(char c) {
         return (c >= 'A') && (c <= 'Z');
     }
 
     public static void main(String[] args) {
         long l = System.nanoTime();
-        int i1 = 100000000;
+        int i1 = 10000;
         for (int i = 0; i < i1; i++) {
-            String s = generate(5);
+            String s = generate(20000);
 //            System.out.println(s);
+//            System.gc();
         }
         long l1 = System.nanoTime() - l;
         long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
