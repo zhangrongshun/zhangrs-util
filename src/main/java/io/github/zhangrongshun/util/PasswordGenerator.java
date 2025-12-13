@@ -25,19 +25,19 @@ public class PasswordGenerator {
             throw new IllegalArgumentException("Password length must be at least 4.");
         }
         char[] chars = new char[length];
-        pad(chars, ALPHABETIC_CHARACTERS, 0, length);
-        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, length);
-        pad(chars, DIGIT_CHARACTERS, -1, length);
-        pad(chars, SPECIAL_CHARACTERS, -1, length);
+        pad(chars, ALPHABETIC_CHARACTERS, 0);
+        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1);
+        pad(chars, DIGIT_CHARACTERS, -1);
+        pad(chars, SPECIAL_CHARACTERS, -1);
         if (length > 4) {
             for (int i = 1; i < length; i++) {
-                pad(chars, ALL_CHARACTERS, i, length);
+                pad(chars, ALL_CHARACTERS, i);
             }
         }
         return new String(chars);
     }
 
-    private static void pad(char[] chars, String str, int targetIndex, int length) {
+    private static void pad(char[] chars, String str, int targetIndex) {
         if (targetIndex < 0) {
             for (; ; ) {
                 int tempIndex = RANDOM.nextInt(chars.length);
@@ -52,7 +52,7 @@ public class PasswordGenerator {
             }
         }
         char preceding = targetIndex > 0 ? chars[targetIndex - 1] : EMPTY_CHAR;
-        char following = targetIndex < length - 1 ? chars[targetIndex + 1] : EMPTY_CHAR;
+        char following = targetIndex < chars.length - 1 ? chars[targetIndex + 1] : EMPTY_CHAR;
         for (; ; ) {
             int i = RANDOM.nextInt(str.length());
             char target = str.charAt(i);
