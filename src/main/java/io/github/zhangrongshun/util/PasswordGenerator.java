@@ -1,7 +1,6 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
-import java.util.concurrent.TimeUnit;
 
 public class PasswordGenerator {
 
@@ -76,22 +75,6 @@ public class PasswordGenerator {
 
     private static boolean isUpperCase(char c) {
         return (c >= 'A') && (c <= 'Z');
-    }
-
-    public static void main(String[] args) {
-        long l = System.nanoTime();
-        int i1 = 100000000;
-        for (int i = 0; i < i1; i++) {
-            String s = generate(4);
-//            System.out.println(s);
-//            System.gc();
-        }
-        long l1 = System.nanoTime() - l;
-        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-        System.out.println(seconds);
-        System.out.println(i1 / seconds);
-////        String s = generatePassword(5);
-////        System.out.println(s);
     }
 
 }
