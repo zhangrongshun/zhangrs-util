@@ -18,58 +18,81 @@ public class PasswordGenerator {
             throw new IllegalArgumentException("Password length must be at least 5.");
         }
         char[] chars = new char[length];
-        chars[0] = getRandomChar(ALPHABETIC_CHARACTERS);
-        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS);
-        pad(chars, DIGIT_CHARACTERS);
-        pad(chars, SPECIAL_CHARACTERS);
+        MyPredicate predicate = PasswordGenerator::test;
+        pad(chars, ALPHABETIC_CHARACTERS, 0, predicate, length);
+        pad(chars, isUpperCase(chars[0]) ? LOWERCASE_CHARACTERS : UPPERCASE_CHARACTERS, -1, predicate, length);
+        pad(chars, DIGIT_CHARACTERS, -1, predicate, length);
+        pad(chars, SPECIAL_CHARACTERS, -1, predicate, length);
         for (int i = 1; i < length; i++) {
-            if (chars[i] != EMPTY_CHAR) {
-                continue;
-            }
-            for (; ; ) {
-                char randomChar = getRandomChar(ALL_CHARACTERS);
-                if (randomChar != chars[i - 1] && ((i < length - 1 && randomChar != chars[i + 1]) || i == length - 1)) {
-                    chars[i] = randomChar;
-                    break;
-                }
-            }
+            pad(chars, ALL_CHARACTERS, i, predicate, length);
         }
         return new String(chars);
     }
 
-    private static void pad(char[] chars, String str) {
+    private static void pad(char[] chars, String str, int targetIndex, MyPredicate predicate, int length) {
+        if (targetIndex < 0) {
+            for (; ; ) {
+                int tempIndex = RANDOM.nextInt(chars.length);
+                if (chars[tempIndex] == EMPTY_CHAR) {
+                    targetIndex = tempIndex;
+                    break;
+                }
+            }
+        } else {
+            if (chars[targetIndex] != EMPTY_CHAR) {
+                return;
+            }
+        }
         for (; ; ) {
-            int i1 = RANDOM.nextInt(chars.length);
-            if (chars[i1] == EMPTY_CHAR) {
-                int i = RANDOM.nextInt(str.length());
-                chars[i1] = str.charAt(i);
+            int i = RANDOM.nextInt(str.length());
+            char target = str.charAt(i);
+            char preceding = EMPTY_CHAR;
+            char following = EMPTY_CHAR;
+            if (targetIndex < length - 1) {
+                following = chars[targetIndex + 1];
+            }
+            if (targetIndex > 0) {
+                preceding = chars[targetIndex - 1];
+            }
+            if (predicate.test(preceding, chars[targetIndex], following, target)) {
+                chars[targetIndex] = target;
                 break;
             }
         }
+    }
+
+    private static boolean test(char preceding, char target, char following, char newValue) {
+        if (target != EMPTY_CHAR) {
+            return false;
+        }
+        if (preceding == EMPTY_CHAR && following == EMPTY_CHAR) {
+            return true;
+        }
+        return newValue != preceding && newValue != following;
+    }
+
+    @FunctionalInterface
+    public interface MyPredicate {
+        boolean test(char preceding, char target, char following, char newValue);
     }
 
     private static boolean isUpperCase(char c) {
         return (c >= 'A') && (c <= 'Z');
     }
 
-    private static char getRandomChar(String source) {
-        int index = RANDOM.nextInt(source.length());
-        return source.charAt(index);
-    }
-
     public static void main(String[] args) {
-//        long l = System.nanoTime();
-//        int i1 = 10000000;
-//        for (int i = 0; i < i1; i++) {
-//            String s = generatePassword(100);
-////            System.out.println(s);
-//        }
+        long l = System.nanoTime();
+        int i1 = 100000000;
+        for (int i = 0; i < 10; i++) {
+            String s = generatePassword(50);
+            System.out.println(s);
+        }
 //        long l1 = System.nanoTime() - l;
 //        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
 //        System.out.println(seconds);
 //        System.out.println(i1 / seconds);
-        String s = generatePassword(50);
-        System.out.println(s);
+////        String s = generatePassword(5);
+////        System.out.println(s);
     }
 
 }
