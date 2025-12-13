@@ -72,7 +72,6 @@ public class PasswordGenerator {
         return newValue != preceding && newValue != following;
     }
 
-    @FunctionalInterface
     public interface MyPredicate {
         boolean test(char preceding, char target, char following, char newValue);
     }
