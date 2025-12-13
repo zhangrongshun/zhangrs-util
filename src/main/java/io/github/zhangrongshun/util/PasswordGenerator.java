@@ -86,7 +86,7 @@ public class PasswordGenerator {
         int i1 = 100000000;
         for (int i = 0; i < i1; i++) {
             String s = generatePassword(5);
-            System.out.println(s);
+//            System.out.println(s);
         }
         long l1 = System.nanoTime() - l;
         long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
