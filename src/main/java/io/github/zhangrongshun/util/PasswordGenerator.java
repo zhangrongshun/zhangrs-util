@@ -14,6 +14,13 @@ public class PasswordGenerator {
     private static final String ALL_CHARACTERS = LOWERCASE_CHARACTERS + UPPERCASE_CHARACTERS + DIGIT_CHARACTERS + SPECIAL_CHARACTERS;
     private static final char EMPTY_CHAR = '\u0000';
 
+    /**
+     * 生成指定长度的密码字符串
+     *
+     * @param length 密码长度，必须至少为4
+     * @return 生成的密码字符串
+     * @throws IllegalArgumentException 当长度小于4时抛出异常
+     */
     public static String generate(int length) {
         if (length < 4) {
             throw new IllegalArgumentException("Password length must be at least 4.");
