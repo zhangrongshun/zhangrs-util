@@ -16,7 +16,7 @@ public class PasswordGenerator {
 
     public static String generatePassword(int length) {
         if (length < 4) {
-            throw new IllegalArgumentException("Password length must be at least 5.");
+            throw new IllegalArgumentException("Password length must be at least 4.");
         }
         char[] chars = new char[length];
         MyPredicate predicate = PasswordGenerator::test;
