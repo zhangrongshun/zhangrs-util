@@ -1,6 +1,7 @@
 package io.github.zhangrongshun.util;
 
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 
 public class PasswordGenerator {
 
@@ -51,17 +52,11 @@ public class PasswordGenerator {
                 return;
             }
         }
+        char preceding = targetIndex > 0 ? chars[targetIndex - 1] : EMPTY_CHAR;
+        char following = targetIndex < length - 1 ? chars[targetIndex + 1] : EMPTY_CHAR;
         for (; ; ) {
             int i = RANDOM.nextInt(str.length());
             char target = str.charAt(i);
-            char preceding = EMPTY_CHAR;
-            char following = EMPTY_CHAR;
-            if (targetIndex < length - 1) {
-                following = chars[targetIndex + 1];
-            }
-            if (targetIndex > 0) {
-                preceding = chars[targetIndex - 1];
-            }
             if (canPlaceChar(preceding, chars[targetIndex], following, target)) {
                 chars[targetIndex] = target;
                 break;
@@ -85,16 +80,16 @@ public class PasswordGenerator {
 
     public static void main(String[] args) {
         long l = System.nanoTime();
-        int i1 = 10;
-        for (int i = 0; i < 1; i++) {
-            String s = generate(5);
-            System.out.println(s);
+        int i1 = 100000000;
+        for (int i = 0; i < i1; i++) {
+            String s = generate(4);
+//            System.out.println(s);
 //            System.gc();
         }
-//        long l1 = System.nanoTime() - l;
-//        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
-//        System.out.println(seconds);
-//        System.out.println(i1 / seconds);
+        long l1 = System.nanoTime() - l;
+        long seconds = TimeUnit.NANOSECONDS.toSeconds(l1);
+        System.out.println(seconds);
+        System.out.println(i1 / seconds);
 ////        String s = generatePassword(5);
 ////        System.out.println(s);
     }
